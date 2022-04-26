@@ -8,9 +8,11 @@ Development environment for [grldchz](https://github.com/grldchz/grldchz-ts) and
 
 ### Get Started
 
-*Install NodeJS
-*Install Vagrant
-*Install Virtual Box
+* Install NodeJS
+* Install Vagrant
+* Install Virtual Box
+
+Download git repositories
 
 ```
 git clone https://github.com/grldchz/grldenv.git
