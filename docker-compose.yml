@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  mysql:
+    build: .docker/mysql
+    container_name: mysql
+    hostname: mysql
+    command: "--innodb_use_native_aio=0 --lower-case-table-names=1"
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+    ports:
+      - 3306:3306
+    volumes:
+      - "./.docker/mysql/volume/include:/opt/database/include:delegated"
+      - "./.docker/mysql/volume/mysql:/var/lib/mysql:delegated"
+      - "./.docker/mysql/volume/script:/opt/script:delegated"
+    networks:
+      - grldchz-network
+  apache:
+    build: .docker/apache
+    container_name: apache
+    hostname: apache
+    ports:
+      - 80:80
+    volumes:
+      - "./grldchz-ts/build:/var/www/html/grldchz"
+      - "./grldservice:/var/www/html/grldservice"
+      - "./vendor:/var/www/html/vendor"
+    depends_on:
+      - "mysql"
+    networks:
+      - grldchz-network
+networks:
+  grldchz-network:
