@@ -1,24 +1,32 @@
 version: '3.3'
 services:
-  mysql:
-    build: .docker/mysql
-    container_name: mysql
-    hostname: mysql
-    command: "--innodb_use_native_aio=0 --lower-case-table-names=1"
+  grldchz-mysql:
+    image: mysql:8
+    container_name: grldchz-mysql
+    hostname: grldchz-mysql
+    command: "--innodb_use_native_aio=0 --lower-case-table-names=1 --sql_mode=NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION"
     cap_add:
       - SYS_NICE  # CAP_SYS_NICE
     ports:
       - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "!QAZ2wsx"
+      MYSQL_USER: grldchz
+      MYSQL_PASSWORD: "@WSX3edc"
     volumes:
-      - "./.docker/mysql/volume/include:/opt/database/include:delegated"
-      - "./.docker/mysql/volume/mysql:/var/lib/mysql:delegated"
-      - "./.docker/mysql/volume/script:/opt/script:delegated"
+      - ./.docker/mysql/scripts:/docker-entrypoint-initdb.d
+      - mysqlvolume:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-uroot", "-p!QAZ2wsx"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
     networks:
       - grldchz-network
-  apache:
+  grldchz-apache:
     build: .docker/apache
-    container_name: apache
-    hostname: apache
+    container_name: grldchz-apache
+    hostname: grldchz-apache
     ports:
       - 80:80
     volumes:
@@ -26,8 +34,10 @@ services:
       - "./grldservice:/var/www/html/grldservice"
       - "./vendor:/var/www/html/vendor"
     depends_on:
-      - "mysql"
+      - "grldchz-mysql"
     networks:
       - grldchz-network
 networks:
   grldchz-network:
+volumes:
+  mysqlvolume:

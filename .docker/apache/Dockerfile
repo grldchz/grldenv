@@ -6,3 +6,5 @@ RUN apt-get update -y && \
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 COPY ./.user.ini /usr/local/etc/php/conf.d/.user.ini
+
+RUN a2enmod rewrite

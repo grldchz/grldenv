@@ -1,7 +1,3 @@
-GRLDCHZ Social network
-
-Copyright (C) 2022 grilledcheeseoftheday.com
-
 # GRLDENV
 
 Development environment for [grldchz](https://github.com/grldchz/grldchz-ts) and [grldservice](https://github.com/grldchz/grldservice)
