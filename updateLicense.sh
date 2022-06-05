@@ -1,3 +1,4 @@
+#!/bin/bash
 count=$(find grldservice -name *.php 2>/dev/null | wc -l)
 if [ $count != 0 ]
 then
